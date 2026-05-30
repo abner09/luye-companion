@@ -2189,6 +2189,17 @@ body {
           <div class="toggle off"></div>
         </div>
       </div>
+      <div class="setting-card">
+        <div class="setting-label">📦 存档管理</div>
+        <div class="prompt-preview" style="font-size:9px;margin-bottom:6px;">
+          导出的存档可跨设备迁移。<b>换手机或清缓存之前务必先导出！</b>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button id="exportSaveBtn" onclick="exportSave()" style="flex:1;min-width:100px;padding:8px 12px;font-size:12px;border-radius:10px;border:1px solid rgba(139,94,60,0.25);background:rgba(245,240,232,0.85);cursor:pointer;font-family:inherit;color:#4a3728;font-weight:600;">📥 导出存档</button>
+          <button id="importSaveBtn" onclick="importSave()" style="flex:1;min-width:100px;padding:8px 12px;font-size:12px;border-radius:10px;border:1px solid rgba(139,94,60,0.25);background:rgba(245,240,232,0.85);cursor:pointer;font-family:inherit;color:#4a3728;font-weight:600;">📤 导入存档</button>
+        </div>
+        <div id="saveMsg" style="margin-top:6px;font-size:10px;color:#4a3728;display:none;"></div>
+      </div>
     </div>
     <div class="bottom-nav" style="margin-top:auto">
       <button class="nav-item" onclick="navigateTo('home')">
@@ -6246,6 +6257,104 @@ function selectRefAudio() {
     if (file) {
       await VoiceManager.loadReferenceAudio(file);
       alert('参考音频已加载！鹿野的声音已就绪。');
+    }
+  };
+  input.click();
+}
+
+// ── 存档导出 / 导入 ──
+function exportSave() {
+  const saveData = {};
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    if (key.startsWith('luye_')) {
+      saveData[key] = localStorage.getItem(key);
+    }
+  }
+  // 也存当前换装
+  saveData['luye_current_outfit'] = localStorage.getItem('luye_current_outfit') || currentOutfit || 'outfit-default';
+  
+  const blob = new Blob([JSON.stringify(saveData, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  const now = new Date();
+  const ts = now.getFullYear() + '-' +
+    String(now.getMonth() + 1).padStart(2, '0') + '-' +
+    String(now.getDate()).padStart(2, '0') + '_' +
+    String(now.getHours()).padStart(2, '0') + '-' +
+    String(now.getMinutes()).padStart(2, '0');
+  a.download = 'luye_save_' + ts + '.json';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  
+  const msg = document.getElementById('saveMsg');
+  if (msg) {
+    msg.style.display = 'block';
+    msg.textContent = '✅ 存档已导出（' + Object.keys(saveData).length + ' 项数据）';
+    msg.style.color = '#2D6A2D';
+    setTimeout(() => { msg.style.display = 'none'; }, 4000);
+  }
+  console.log('[Save] 导出完成:', Object.keys(saveData).length, '项数据');
+}
+
+function importSave() {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = '.json,application/json';
+  input.onchange = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    try {
+      const text = await file.text();
+      const saveData = JSON.parse(text);
+      const msg = document.getElementById('saveMsg');
+      
+      // 验证：至少包含几个 luye_ 前缀的 key
+      const keys = Object.keys(saveData).filter(k => k.startsWith('luye_'));
+      if (keys.length === 0) {
+        if (msg) {
+          msg.style.display = 'block';
+          msg.textContent = '❌ 无效的存档文件，未找到游戏数据';
+          msg.style.color = '#c0392b';
+          setTimeout(() => { msg.style.display = 'none'; }, 5000);
+        }
+        return;
+      }
+      
+      // 恢复所有数据
+      let count = 0;
+      for (const [key, value] of Object.entries(saveData)) {
+        if (key.startsWith('luye_')) {
+          localStorage.setItem(key, value);
+          count++;
+        }
+      }
+      
+      // 特殊处理换装
+      if (saveData['luye_current_outfit']) {
+        localStorage.setItem('luye_current_outfit', saveData['luye_current_outfit']);
+      }
+      
+      if (msg) {
+        msg.style.display = 'block';
+        msg.textContent = '✅ 存档导入成功！（' + count + ' 项数据已恢复）即将刷新...';
+        msg.style.color = '#2D6A2D';
+      }
+      
+      console.log('[Save] 导入完成:', count, '项数据，即将刷新');
+      setTimeout(() => { location.reload(); }, 1500);
+    } catch (err) {
+      console.error('[Save] 导入失败:', err);
+      const msg = document.getElementById('saveMsg');
+      if (msg) {
+        msg.style.display = 'block';
+        msg.textContent = '❌ 文件读取失败：' + err.message;
+        msg.style.color = '#c0392b';
+        setTimeout(() => { msg.style.display = 'none'; }, 5000);
+      }
     }
   };
   input.click();
