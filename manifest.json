@@ -2,7 +2,7 @@
   "name": "鹿野的日常",
   "short_name": "鹿野",
   "description": "鹿野桌面伴侣 - 罗小黑战记同人互动App",
-  "start_url": "./luye-companion.html",
+  "start_url": "./index.html",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#2D3A2D",
