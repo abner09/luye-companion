@@ -1,0 +1,38 @@
+# 依赖
+node_modules/
+__pycache__/
+*.pyc
+
+# 临时文件
+__check.js
+__create_repo.py
+check_js.js
+*.log
+nul
+
+# 预览截图
+.ardot-screenshots/
+.playwright-cli/
+_blob.png
+_edges.png
+_mask.png
+chat-nav-updated.png
+chat-nav.png
+focus-nav-updated.png
+habits-nav-updated.png
+home-nav-fixed.png
+home-nav-updated.png
+home-nav.png
+luye-hero.png
+luye-modern.png
+luye-sprite.jpg
+overview.md
+settings-nav-updated.png
+wardrobe-nav-updated.png
+
+# 备份
+*.bak
+*.bak2
+
+# WorkBuddy
+.workbuddy/

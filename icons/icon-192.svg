@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192" width="192" height="192">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#2D3A2D;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#4A6741;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <!-- 背景圆 -->
+  <circle cx="96" cy="96" r="90" fill="url(#bg)" stroke="#6B8F5E" stroke-width="3"/>
+  <!-- 猫耳（银发） -->
+  <ellipse cx="66" cy="52" rx="22" ry="36" fill="#D8DEE4" transform="rotate(-15 66 52)"/>
+  <ellipse cx="126" cy="52" rx="22" ry="36" fill="#D8DEE4" transform="rotate(15 126 52)"/>
+  <ellipse cx="66" cy="54" rx="14" ry="26" fill="#2D3A2D" transform="rotate(-15 66 54)"/>
+  <ellipse cx="126" cy="54" rx="14" ry="26" fill="#2D3A2D" transform="rotate(15 126 54)"/>
+  <!-- 脸部 -->
+  <ellipse cx="96" cy="105" rx="42" ry="48" fill="#D8DEE4"/>
+  <!-- 眼睛 -->
+  <ellipse cx="80" cy="98" rx="7" ry="9" fill="#2C2C2A"/>
+  <ellipse cx="112" cy="98" rx="7" ry="9" fill="#2C2C2A"/>
+  <!-- 眼睛高光 -->
+  <circle cx="78" cy="95" r="2.5" fill="white"/>
+  <circle cx="110" cy="95" r="2.5" fill="white"/>
+  <!-- 嘴巴/表情（傲娇） -->
+  <path d="M 88 118 Q 96 112 104 118" stroke="#2C2C2A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <!-- 刘海（银发） -->
+  <path d="M 62 85 Q 70 55 96 60 Q 122 55 130 85" fill="#C0C8D8" stroke="none"/>
+  <!-- 发饰/铃铛 -->
+  <circle cx="96" cy="72" r="5" fill="#D4A853"/>
+  <circle cx="96" cy="72" r="2.5" fill="#F0D68A"/>
+  <!-- 呆毛 -->
+  <path d="M 96 48 Q 92 30 98 28 Q 104 30 100 48" fill="#D8DEE4" stroke="none"/>
+</svg>
